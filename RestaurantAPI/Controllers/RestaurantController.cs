@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Entities;
@@ -7,10 +8,12 @@ using RestaurantAPI.Services;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RestaurantAPI.Controllers
 {
+    [ApiController]
     [Route("api/restaurant")]
     public class RestaurantController : ControllerBase
     {
@@ -24,37 +27,27 @@ namespace RestaurantAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateRestaurantDto dto, [FromRoute]int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            
-            var isUpdated = _restaurantService.Update(id, dto);
-            if (!isUpdated)
-            {
-                return NotFound();
-            }
+
+            _restaurantService.Update(id, dto);
+
+
+
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-            var isDeleted = _restaurantService.Delete(id);
-            if (isDeleted)
-            {
-                return NoContent();
-            }
-            return NotFound();
+            _restaurantService.Delete(id);
+            return NoContent();
         }
 
         [HttpPost]
+        [Authorize(Roles ="Admin,Manager")]
+
         public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var userId = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
             var id = _restaurantService.Create(dto);
 
@@ -63,9 +56,9 @@ namespace RestaurantAPI.Controllers
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<RestaurantDto>> GetAll()
+        public ActionResult<IEnumerable<RestaurantDto>> GetAll([FromQuery] string searchPhrase)
         {
-            var restaurantsDtos = _restaurantService.GetAll();
+            var restaurantsDtos = _restaurantService.GetAll(searchPhrase);
             return Ok(restaurantsDtos);
         }
 
@@ -73,10 +66,7 @@ namespace RestaurantAPI.Controllers
         public ActionResult<IEnumerable<RestaurantDto>> Get([FromRoute]int id)
         {
             var restaurant = _restaurantService.GetById(id);
-            if (restaurant is null)
-            {
-                return NotFound();
-            }
+
                 return Ok(restaurant);
         }
     }

@@ -1,0 +1,8 @@
+2022-07-02 17:12:38.1788 Info Message Template Auto Format enabled
+2022-07-02 17:12:38.1883 Info Loading assembly: NLog.Web.AspNetCore
+2022-07-02 17:12:38.1883 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'allfile' not found for logging rule: *.
+2022-07-02 17:12:38.2109 Info Validating config: Targets=0, ConfigItems=1, FilePath=C:\Users\mateu\source\repos\RestaurantAPI\RestaurantAPI\NLog.config
+2022-07-02 17:15:16.3246 Info Message Template Auto Format enabled
+2022-07-02 17:15:16.3366 Info Loading assembly: NLog.Web.AspNetCore
+2022-07-02 17:15:16.3461 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'allfile' not found for logging rule: *.
+2022-07-02 17:15:16.3610 Info Validating config: Targets=0, ConfigItems=1, FilePath=C:\Users\mateu\source\repos\RestaurantAPI\RestaurantAPI\NLog.config

@@ -20,6 +20,8 @@ namespace RestaurantAPI
                 c => c.MapFrom(dto => new Address() 
                 { City = dto.City, Street = dto.Street, PostalCode = dto.PostalCode }));
             CreateMap<UpdateRestaurantDto, Restaurant>();
+
+            CreateMap<CreateDishDto, Dish>();
         }
     }
 }
